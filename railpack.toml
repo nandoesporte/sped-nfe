@@ -1,2 +1,2 @@
-[build]
-nixpacks = "php82"
+[providers]
+php = "8.2"
