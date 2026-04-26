@@ -26,5 +26,18 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Run a simple PHP built-in server on port 8080
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "/app"]
+# Create a simple web root with index.php
+RUN mkdir -p /app/public && \
+    echo '<?php \
+echo "<h1>NFe SPED Library</h1>"; \
+echo "<p>Library loaded successfully!</p>"; \
+echo "<pre>"; \
+echo "PHP Version: " . phpversion() . "\n"; \
+echo "NFePHP SPED-NFe installed\n"; \
+require_once "/app/vendor/autoload.php"; \
+echo "Autoloader loaded successfully\n"; \
+echo "</pre>"; \
+?>' > /app/public/index.php
+
+# Run PHP built-in server on port 8080 serving from public directory
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "/app/public"]
